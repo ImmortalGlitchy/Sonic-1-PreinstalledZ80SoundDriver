@@ -2060,7 +2060,7 @@ zPlaySound_CheckRing:
 .ringchange:
 	cpl					; If it was 0, it's now FFh, or vice versa
 	ld	(zRingSpeaker),a		; Store new ring speaker value (other side)
-;	jp	zPlaySound			; now play the play the ring sound
+	;jp	zPlaySound			; now play the play the ring sound
 ; ---------------------------------------------------------------------------
 ; zloc_942:
 ;zPlaySound_CheckGloop:
@@ -2075,7 +2075,7 @@ zPlaySound_CheckRing:
 ;	or	a
 ;	ret	z		; Sometimes don't play it
 ;	jp	zPlaySound	; Now play the gloop sound
-; ---------------------------------------------------------------------------
+; --------------------------------------------------------------------------- bit	7,(ix+zTrack.PlaybackControl)	; Is this track currently playing?
 ; zloc_953:
 ;zPlaySound_CheckSpindash:
 ;    if ~~OptimiseDriver

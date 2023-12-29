@@ -132,8 +132,18 @@ stopZ80:	macro
 ; ---------------------------------------------------------------------------
 
 waitZ80:	macro
+		if OptimiseZ80Stops=1
+.wait:		btst	#0,(z80_bus_request).l
+		bne.s	.end
+		btst	#0,(z80_bus_request).l
+		bne.s	.wait
+.end:
+
+		elseif
+
 .wait:		btst	#0,(z80_bus_request).l
 		bne.s	.wait
+		endif
 		endm
 
 ; ---------------------------------------------------------------------------

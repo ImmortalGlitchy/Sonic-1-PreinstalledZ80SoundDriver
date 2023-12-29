@@ -22,5 +22,6 @@ clownmdemu-frontend-imgui.ini
 # Other stuff to keep this clean
 .vs/
 .git/
+.bak
 
 

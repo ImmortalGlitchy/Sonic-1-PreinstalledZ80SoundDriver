@@ -2125,9 +2125,20 @@ Sega_WaitPal:
 
 		move.b	#sfx_Sega,d0
 		jsr 	PlaySound_Special	; play "SEGA" sound
+		move.w  #$3000,d4
+
+.Pause
+		moveq  #$50,d3
+.Loop
+        dbf d3,.Loop
+		subq.w  #1,d4
+		beq.s   .Cont
+		bra.s   .Pause
+
+.Cont
 		move.b	#$14,(v_vbla_routine).w
 		bsr.w	WaitForVBla
-		move.w	#$8E,(v_demolength).w
+		move.w	#$1E,(v_demolength).w
 
 Sega_WaitEnd:
 		move.b	#2,(v_vbla_routine).w

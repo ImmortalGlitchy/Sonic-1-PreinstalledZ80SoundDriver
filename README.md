@@ -1,7 +1,9 @@
 s1disasm_git
 ============
 
-The very latest Sonic 1 Disassembly.
+A Sonic 1 disassembly that is preinstalled with a Z80 driver from Not-So-Filter's Sonic 1 Optimised project.
+
+Poke if the disassembly is out of date with the main one.
 
 See: http://info.sonicretro.org/Disassemblies
 

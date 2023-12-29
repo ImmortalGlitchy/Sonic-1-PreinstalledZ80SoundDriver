@@ -3726,8 +3726,18 @@ dac_sample_metadata macro label,sampleRate
 	db	id(label),pcmLoopCounter(sampleRate,227/2)	; See zWriteToDAC for an explanation of this magic number.
     endm
 
+	if S3Samples
+
+	dac_sample_metadata zDACPtr_Kick,   15000	; 81h
+	dac_sample_metadata zDACPtr_Snare,  16500	; 82h
+
+	elseif
+
 	dac_sample_metadata zDACPtr_Kick,    8250	; 81h
 	dac_sample_metadata zDACPtr_Snare,  24000	; 82h
+
+	endif
+
 	dac_sample_metadata zDACPtr_Kick,8250	; 83h
 	dac_sample_metadata zDACPtr_Kick,8250	; 84h
 	dac_sample_metadata zDACPtr_Timpani, 7500	; 85h

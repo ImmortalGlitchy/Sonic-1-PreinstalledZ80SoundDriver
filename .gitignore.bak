@@ -15,5 +15,12 @@ s1built.prev.bin
 # Typical CMake build directory.
 build_tools/s1p2bin/build
 
-# Clownmdemu ini'
+# Clownmdemu ini's
+clownmdemu-frontend.ini
+clownmdemu-frontend-imgui.ini
+
+# Other stuff to keep this clean
+.vs/
+.git/
+
 

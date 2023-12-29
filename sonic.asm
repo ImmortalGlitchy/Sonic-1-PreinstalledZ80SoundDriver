@@ -24,7 +24,7 @@ FixBugs		  = 0	; change to 1 to enable bugfixes
 
 zeroOffsetOptimization = 0	; if 1, makes a handful of zero-offset instructions smaller
 
-OptimiseZ80Stops = 1 ; if 1, removes some Z80 stops to improve PCM playback quality
+OptimiseZ80Stops = 0 ; if 1, removes some Z80 stops to improve PCM playback quality
 
 	include "MacroSetup.asm"
 	include "Macros.asm"
@@ -967,6 +967,7 @@ JoypadInit:
 
 ReadJoypads:
         if OptimiseZ80Stops=0
+
 		lea	(v_jpadhold1).w,a0 ; address where joypad states are written
 		lea	(z80_port_1_data+1).l,a1	; first	joypad port
 		bsr.s	.read		; do the first joypad
@@ -994,6 +995,7 @@ ReadJoypads:
 		rts	
 
         elseif 
+
         stopZ80
         lea    (v_jpadhold1).w,a0 ; address where joypad states are written
         lea    (z80_port_1_data+1).l,a1    ; first    joypad port
@@ -1022,6 +1024,7 @@ ReadJoypads:
         move.b    d1,(a0)+
         startZ80
         rts   
+
 	    endif 
 
 ; End of function ReadJoypads

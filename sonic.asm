@@ -28,6 +28,8 @@ OptimiseZ80Stops = 1 ; if 1, removes some Z80 stops to improve PCM playback qual
 
 S3Samples = 0 ; if 1, uses Snare and Kick From Sonic 3
 
+SkipCheckSum = 1; skips the slow checksum
+
 	include "MacroSetup.asm"
 	include "Macros.asm"
 	include	"Constants.asm"
@@ -228,8 +230,11 @@ PSGInitLoop:
 		disable_ints
 
 SkipSetup:
-		bra.s	GameProgram	; begin game
-
+		if SkipCheckSum
+		bra.w   CheckSumOk	; Start Game
+		elseif
+		bra.s	GameProgram	; Start Checksum
+		endif
 ; ===========================================================================
 SetupValues:	dc.w $8000		; VDP register start number
 		dc.w $3FFF		; size of RAM/4
@@ -318,7 +323,6 @@ GameProgram:
 		beq.s	CheckSumCheck
 		cmpi.l	#'init',(v_init).w ; has checksum routine already run?
 		beq.w	GameInit	; if yes, branch
-
 CheckSumCheck:
 		movea.l	#EndOfHeader,a0	; start	checking bytes after the header	($200)
 		movea.l	#RomEndLoc,a1	; stop at end of ROM

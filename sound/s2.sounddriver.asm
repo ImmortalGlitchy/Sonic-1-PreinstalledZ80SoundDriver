@@ -3660,25 +3660,25 @@ music_metadata macro bank,pal,uncompressed,label
 	db	(bank<<7)|(pal<<6)|(uncompressed<<5)|((label-MusicPoint)/2)
     endm
 
-zMusIDPtr_2PResult:	music_metadata 0,0,1,ptr_mus81
-zMusIDPtr_EHZ:		music_metadata 0,0,1,ptr_mus82
-zMusIDPtr_MCZ_2P:	music_metadata 0,0,1,ptr_mus83
-zMusIDPtr_OOZ:		music_metadata 0,0,1,ptr_mus84
-zMusIDPtr_MTZ:		music_metadata 0,0,1,ptr_mus85
-zMusIDPtr_HTZ:		music_metadata 0,0,1,ptr_mus86
-zMusIDPtr_ARZ:		music_metadata 0,0,1,ptr_mus87
-zMusIDPtr_CNZ_2P:	music_metadata 0,0,1,ptr_mus88
-zMusIDPtr_CNZ:		music_metadata 0,0,1,ptr_mus89
-zMusIDPtr_DEZ:		music_metadata 0,0,1,ptr_mus8A
-zMusIDPtr_MCZ:		music_metadata 0,0,1,ptr_mus8B
-zMusIDPtr_EHZ_2P:	music_metadata 0,0,1,ptr_mus8C
-zMusIDPtr_SCZ:		music_metadata 0,0,1,ptr_mus8D
-zMusIDPtr_CPZ:		music_metadata 0,0,1,ptr_mus8E
-zMusIDPtr_WFZ:		music_metadata 0,0,1,ptr_mus8F
-zMusIDPtr_HPZ:		music_metadata 0,0,1,ptr_mus90
-zMusIDPtr_Options:	music_metadata 0,0,1,ptr_mus91
-zMusIDPtr_SpecStage:	music_metadata 0,1,1,ptr_mus92
-zMusIDPtr_Boss:		music_metadata 0,0,1,ptr_mus93
+zMusIDPtr_GHZ:	    music_metadata 0,0,1,ptr_mus81
+zMusIDPtr_LZ:		music_metadata 0,0,1,ptr_mus82
+zMusIDPtr_MZ:	    music_metadata 0,0,1,ptr_mus83
+zMusIDPtr_SLZ:		music_metadata 0,0,1,ptr_mus84
+zMusIDPtr_SYZ:		music_metadata 0,0,1,ptr_mus85
+zMusIDPtr_SBZ:		music_metadata 0,0,1,ptr_mus86
+zMusIDPtr_Invincible:	music_metadata 0,0,1,ptr_mus87
+zMusIDPtr_ExtraLife:	music_metadata 0,0,1,ptr_mus88
+zMusIDPtr_SpecStage:	music_metadata 0,0,1,ptr_mus89
+zMusIDPtr_Title:	music_metadata 0,0,1,ptr_mus8A
+zMusIDPtr_Ending:	music_metadata 0,0,1,ptr_mus8B
+zMusIDPtr_Boss:	music_metadata 0,0,1,ptr_mus8C
+zMusIDPtr_FZ:		music_metadata 0,0,1,ptr_mus8D
+zMusIDPtr_GotThrough:		music_metadata 0,0,1,ptr_mus8E
+zMusIDPtr_GameOver:		music_metadata 0,0,1,ptr_mus8F
+zMusIDPtr_Continue:		music_metadata 0,0,1,ptr_mus90
+zMusIDPtr_Credits:	music_metadata 0,0,1,ptr_mus91
+zMusIDPtr_Drowning:	music_metadata 0,1,1,ptr_mus92
+zMusIDPtr_Emerald:		music_metadata 0,0,1,ptr_mus93
 zMusIDPtr__End:
 
 ; Tempo with speed shoe tempo for each song

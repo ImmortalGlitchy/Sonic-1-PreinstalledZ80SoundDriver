@@ -24,6 +24,8 @@ FixBugs		  = 0	; change to 1 to enable bugfixes
 
 zeroOffsetOptimization = 0	; if 1, makes a handful of zero-offset instructions smaller
 
+OptimiseZ80Stops = 1 ; if 1, removes some Z80 stops to improve PCM playback quality
+
 	include "MacroSetup.asm"
 	include "Macros.asm"
 	include	"Constants.asm"
@@ -630,8 +632,10 @@ VBla_00:
 
 .notPAL:
 		move.w	#1,(f_hbla_pal).w ; set HBlank flag
+        if OptimiseZ80Stops=1 
 		stopZ80
 		waitZ80
+		endif
 		tst.b	(f_wtr_state).w	; is water above top of screen?
 		bne.s	.waterabove 	; if yes, branch
 
@@ -643,7 +647,9 @@ VBla_00:
 
 .waterbelow:
 		move.w	(v_hbla_hreg).w,(a5)
+		if OptimiseZ80Stops=1 
 		startZ80
+		endif
 		bra.w	VBla_Exit
 ; ===========================================================================
 
@@ -681,8 +687,10 @@ VBla_10:
 		beq.w	VBla_0A		; if yes, branch
 
 VBla_08:
+        if OptimiseZ80Stops=1 
 		stopZ80
 		waitZ80
+		endif
 		bsr.w	ReadJoypads
 		tst.b	(f_wtr_state).w
 		bne.s	.waterabove
@@ -705,7 +713,9 @@ VBla_08:
 		move.b	#0,(f_sonframechg).w
 
 .nochg:
+        if OptimiseZ80Stops=1 
 		startZ80
+		endif
 		movem.l	(v_screenposx).w,d0-d7
 		movem.l	d0-d7,(v_screenposx_dup).w
 		movem.l	(v_fg_scroll_flags).w,d0-d1
@@ -739,13 +749,17 @@ Demo_Time:
 ; ===========================================================================
 
 VBla_0A:
+        if OptimiseZ80Stops=1 
 		stopZ80
 		waitZ80
+		endif
 		bsr.w	ReadJoypads
 		writeCRAM	v_pal_dry,$80,0
 		writeVRAM	v_spritetablebuffer,$280,vram_sprites
 		writeVRAM	v_hscrolltablebuffer,$380,vram_hscroll
+		if OptimiseZ80Stops=1 
 		startZ80
+		endif
 		bsr.w	PalCycle_SS
 		tst.b	(f_sonframechg).w ; has Sonic's sprite changed?
 		beq.s	.nochg		; if not, branch
@@ -763,8 +777,10 @@ VBla_0A:
 ; ===========================================================================
 
 VBla_0C:
+        if OptimiseZ80Stops=1 
 		stopZ80
 		waitZ80
+		endif
 		bsr.w	ReadJoypads
 		tst.b	(f_wtr_state).w
 		bne.s	.waterabove
@@ -785,7 +801,9 @@ VBla_0C:
 		move.b	#0,(f_sonframechg).w
 
 .nochg:
+        if OptimiseZ80Stops=1 
 		startZ80
+		endif
 		movem.l	(v_screenposx).w,d0-d7
 		movem.l	d0-d7,(v_screenposx_dup).w
 		movem.l	(v_fg_scroll_flags).w,d0-d1
@@ -811,13 +829,17 @@ VBla_12:
 ; ===========================================================================
 
 VBla_16:
+        if OptimiseZ80Stops=1 
 		stopZ80
 		waitZ80
+		endif
 		bsr.w	ReadJoypads
 		writeCRAM	v_pal_dry,$80,0
 		writeVRAM	v_spritetablebuffer,$280,vram_sprites
 		writeVRAM	v_hscrolltablebuffer,$380,vram_hscroll
+		if OptimiseZ80Stops=1 
 		startZ80
+		endif
 		tst.b	(f_sonframechg).w
 		beq.s	.nochg
 		writeVRAM	v_sgfx_buffer,$2E0,ArtTile_Sonic*$20
@@ -835,8 +857,10 @@ VBla_16:
 
 
 sub_106E:
+        if OptimiseZ80Stops=1 
 		stopZ80
 		waitZ80
+		endif
 		bsr.w	ReadJoypads
 		tst.b	(f_wtr_state).w ; is water above top of screen?
 		bne.s	.waterabove	; if yes, branch
@@ -849,7 +873,9 @@ sub_106E:
 .waterbelow:
 		writeVRAM	v_spritetablebuffer,$280,vram_sprites
 		writeVRAM	v_hscrolltablebuffer,$380,vram_hscroll
+		if OptimiseZ80Stops=1 
 		startZ80
+		endif
 		rts	
 ; End of function sub_106E
 
@@ -940,6 +966,7 @@ JoypadInit:
 
 
 ReadJoypads:
+        if OptimiseZ80Stops=0
 		lea	(v_jpadhold1).w,a0 ; address where joypad states are written
 		lea	(z80_port_1_data+1).l,a1	; first	joypad port
 		bsr.s	.read		; do the first joypad
@@ -965,6 +992,38 @@ ReadJoypads:
 		and.b	d0,d1
 		move.b	d1,(a0)+
 		rts	
+
+        elseif 
+        stopZ80
+        lea    (v_jpadhold1).w,a0 ; address where joypad states are written
+        lea    (z80_port_1_data+1).l,a1    ; first    joypad port
+        bsr.s    .read        ; do the first joypad
+        stopZ80
+        addq.w    #2,a1        ; do the second    joypad
+
+.read:
+        move.b    #0,(a1)
+        nop    
+        nop    
+        move.b    (a1),d0
+        lsl.b    #2,d0
+        andi.b    #$C0,d0
+        move.b    #$40,(a1)
+        nop    
+        nop    
+        move.b    (a1),d1
+        andi.b    #$3F,d1
+        or.b    d1,d0
+        not.b    d0
+        move.b    (a0),d1
+        eor.b    d0,d1
+        move.b    d0,(a0)+
+        and.b    d0,d1
+        move.b    d1,(a0)+
+        startZ80
+        rts   
+	    endif 
+
 ; End of function ReadJoypads
 
 

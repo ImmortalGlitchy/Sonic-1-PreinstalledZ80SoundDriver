@@ -30,7 +30,7 @@ S3Samples = 0 ; if 1, uses Snare and Kick From Sonic 3
 
 SkipCheckSum = 0; skips the slow checksum
 
-Sega68kFreezeTime: = $5D; Changing to a higher value the 68k stays frozen longer
+Sega68kFreezeTime: = $5D ; Changing to a higher value the 68k stays frozen longer
 
 	include "MacroSetup.asm"
 	include "Macros.asm"

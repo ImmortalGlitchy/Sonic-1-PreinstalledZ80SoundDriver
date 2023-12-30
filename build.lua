@@ -7,7 +7,7 @@
 -- Set this to true to use a better compression algorithm for the DAC driver.
 -- Having this set to false will use an inferior compression algorithm that
 -- results in an accurate ROM being produced.
-local improved_dac_driver_compression = true
+local improved_dac_driver_compression = false
 
 ---------------------
 -- End of settings --

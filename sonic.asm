@@ -28,7 +28,7 @@ OptimiseZ80Stops = 0 ; if 1, removes some Z80 stops to improve PCM playback qual
 
 S3Samples = 0 ; if 1, uses Snare and Kick From Sonic 3
 
-SkipCheckSum = 0; skips the slow checksum
+SkipCheckSum = 0 ; skips the slow checksum
 
 Sega68kFreezeTime: = $5D ; Changing to a higher value the 68k stays frozen longer
 
@@ -2138,8 +2138,7 @@ Sega_WaitPal:
 .Loop
         dbf d3,.Loop
 		subq.w  #1,d4
-		beq.s   .Cont
-		bra.s   .Pause
+		bne.s   .Pause
 
 .Cont
 		move.b	#$14,(v_vbla_routine).w

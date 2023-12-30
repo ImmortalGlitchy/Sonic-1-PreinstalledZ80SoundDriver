@@ -2139,8 +2139,7 @@ Sega_WaitPal:
         dbf d3,.Loop
 		subq.w  #1,d4
 		bne.s   .Pause
-
-.Cont
+		
 		move.b	#$14,(v_vbla_routine).w
 		bsr.w	WaitForVBla
 		move.w	#$1E,(v_demolength).w

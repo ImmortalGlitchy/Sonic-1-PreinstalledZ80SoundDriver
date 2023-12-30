@@ -9,8 +9,8 @@ sonic.log
 sonic.p
 
 # Built ROMs.
-s1built.bin
-# s1built.prev.bin
+# s1built.bin
+s1built.prev.bin
 
 # Typical CMake build directory.
 build_tools/s1p2bin/build

@@ -2050,7 +2050,7 @@ zPlaySound_CheckRing:
 ;	ld	(zSpindashActiveFlag),a		; Clear spindash sound flag
 	ld	a,c				; Sound index -> 'a'
 	cp	sfx_Ring			; is this the ring sound?
-	jr	nz,zPlaySound	; if not, jump
+	jr	nz,zPlaySound_CheckPushingBlock	; if not, jump
 	; This is the ring sound...
 	ld	a,(zRingSpeaker)		; 0 plays left, FFh plays right
 	or	a				; Test it
@@ -2060,7 +2060,7 @@ zPlaySound_CheckRing:
 .ringchange:
 	cpl					; If it was 0, it's now FFh, or vice versa
 	ld	(zRingSpeaker),a		; Store new ring speaker value (other side)
-	;jp	zPlaySound			; now play the play the ring sound
+	jp	zPlaySound			; now play the play the ring sound
 ; ---------------------------------------------------------------------------
 ; zloc_942:
 ;zPlaySound_CheckGloop:
@@ -2101,6 +2101,18 @@ zPlaySound_CheckRing:
 ;	ld	(zSpindashPlayingCounter),a
 ;	ld	a,-1
 ;	ld	(zSpindashActiveFlag),a
+
+; ---------------------------------------------------------------------------
+; zloc_942:
+zPlaySound_CheckPushingBlock:
+	ld	a, c
+	cp	sfx_Push
+	jr	nz, zPlaySound
+	ld	a, (zPushingFlag)
+	or	a
+	ret	nz		; Pushing sound	not yet	finished - prevent from	playing	again
+	ld	a, 80h
+	ld	(zPushingFlag), a	; set Pushing Flag
 
 ; zloc_975:
 zPlaySound:
@@ -2825,7 +2837,7 @@ coordflagLookup:
 	db	0
     endif
 ; ---------------------------------------------------------------------------
-	jp	cfNull		; ED
+	jp	cfClearPush		; ED
     if ~~OptimiseDriver
 	db	0
     endif

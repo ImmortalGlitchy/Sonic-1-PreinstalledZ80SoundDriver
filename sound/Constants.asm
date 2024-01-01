@@ -1,7 +1,7 @@
 
 Size_of_DAC_samples =		$2F00
 Size_of_SEGA_sound =		$6978
-Size_of_Snd_driver_guess =	$EEB ; approximate post-compressed size of the Z80 sound driver
+Size_of_Snd_driver_guess =	$1090 ; approximate post-compressed size of the Z80 sound driver
 
 ; Z80 addresses
 z80_ram:		equ $A00000	; start of Z80 RAM

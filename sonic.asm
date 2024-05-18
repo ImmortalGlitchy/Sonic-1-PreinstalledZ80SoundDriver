@@ -16,19 +16,19 @@ AddressSRAM	  = 3	; 0 = odd+even; 2 = even only; 3 = odd only
 ; Change to 0 to build the original version of the game, dubbed REV00
 ; Change to 1 to build the later vesion, dubbed REV01, which includes various bugfixes and enhancements
 ; Change to 2 to build the version from Sonic Mega Collection, dubbed REVXB, which fixes the infamous "spike bug"
-Revision	  = 1
+Revision	  = 2
 
 ZoneCount	  = 6	; discrete zones are: GHZ, MZ, SYZ, LZ, SLZ, and SBZ
 
-FixBugs		  = 0	; change to 1 to enable bugfixes
+FixBugs		  = 1	; change to 1 to enable bugfixes
 
-zeroOffsetOptimization = 0	; if 1, makes a handful of zero-offset instructions smaller
+zeroOffsetOptimization = 1	; if 1, makes a handful of zero-offset instructions smaller
 
-OptimiseZ80Stops = 0 ; if 1, removes unnecessary Z80 stops to improve PCM playback quality
+OptimiseZ80Stops = 1 ; if 1, removes unnecessary Z80 stops to improve PCM playback quality
 
-S3Samples = 0 ; if 1, uses Snare and Kick From Sonic 3
+S3Samples = 1 ; if 1, uses Snare and Kick From Sonic 3
 
-SkipCheckSum = 0 ; skips the slow checksum
+SkipCheckSum = 1 ; skips the slow checksum
 
 Sega68kFreezeTime: = $5D ; Changing to a higher value the 68k stays frozen longer
 

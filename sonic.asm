@@ -16,19 +16,19 @@ AddressSRAM	  = 3	; 0 = odd+even; 2 = even only; 3 = odd only
 ; Change to 0 to build the original version of the game, dubbed REV00
 ; Change to 1 to build the later vesion, dubbed REV01, which includes various bugfixes and enhancements
 ; Change to 2 to build the version from Sonic Mega Collection, dubbed REVXB, which fixes the infamous "spike bug"
-Revision	  = 2
+Revision	  = 0
 
 ZoneCount	  = 6	; discrete zones are: GHZ, MZ, SYZ, LZ, SLZ, and SBZ
 
-FixBugs		  = 1	; change to 1 to enable bugfixes
+FixBugs		  = 0	; change to 1 to enable bugfixes
 
-zeroOffsetOptimization = 1	; if 1, makes a handful of zero-offset instructions smaller
+zeroOffsetOptimization = 0	; if 1, makes a handful of zero-offset instructions smaller
 
-OptimiseZ80Stops = 1 ; if 1, removes unnecessary Z80 stops to improve PCM playback quality
+OptimiseZ80Stops = 1 ; if 1, removes unnecessary Z80 stops to improve playback quality
 
 S3Samples = 1 ; if 1, uses Snare and Kick From Sonic 3
 
-SkipCheckSum = 1 ; skips the slow checksum
+SkipCheckSum = 0 ; skips the slow checksum
 
 Sega68kFreezeTime: = $5D ; Changing to a higher value the 68k stays frozen longer
 
@@ -640,7 +640,7 @@ VBla_00:
 
 .notPAL:
 		move.w	#1,(f_hbla_pal).w ; set HBlank flag
-        if OptimiseZ80Stops=1 
+        if OptimiseZ80Stops=0 
 		stopZ80
 		waitZ80
 		endif
@@ -655,7 +655,7 @@ VBla_00:
 
 .waterbelow:
 		move.w	(v_hbla_hreg).w,(a5)
-		if OptimiseZ80Stops=1 
+		if OptimiseZ80Stops=0
 		startZ80
 		endif
 		bra.w	VBla_Exit
@@ -695,7 +695,7 @@ VBla_10:
 		beq.w	VBla_0A		; if yes, branch
 
 VBla_08:
-        if OptimiseZ80Stops=1 
+        if OptimiseZ80Stops=0 
 		stopZ80
 		waitZ80
 		endif
@@ -721,7 +721,7 @@ VBla_08:
 		move.b	#0,(f_sonframechg).w
 
 .nochg:
-        if OptimiseZ80Stops=1 
+        if OptimiseZ80Stops=0 
 		startZ80
 		endif
 		movem.l	(v_screenposx).w,d0-d7
@@ -757,7 +757,7 @@ Demo_Time:
 ; ===========================================================================
 
 VBla_0A:
-        if OptimiseZ80Stops=1 
+        if OptimiseZ80Stops=0 
 		stopZ80
 		waitZ80
 		endif
@@ -765,7 +765,7 @@ VBla_0A:
 		writeCRAM	v_pal_dry,$80,0
 		writeVRAM	v_spritetablebuffer,$280,vram_sprites
 		writeVRAM	v_hscrolltablebuffer,$380,vram_hscroll
-		if OptimiseZ80Stops=1 
+		if OptimiseZ80Stops=0
 		startZ80
 		endif
 		bsr.w	PalCycle_SS
@@ -785,7 +785,7 @@ VBla_0A:
 ; ===========================================================================
 
 VBla_0C:
-        if OptimiseZ80Stops=1 
+        if OptimiseZ80Stops=0 
 		stopZ80
 		waitZ80
 		endif
@@ -809,7 +809,7 @@ VBla_0C:
 		move.b	#0,(f_sonframechg).w
 
 .nochg:
-        if OptimiseZ80Stops=1 
+        if OptimiseZ80Stops=0 
 		startZ80
 		endif
 		movem.l	(v_screenposx).w,d0-d7
@@ -837,7 +837,7 @@ VBla_12:
 ; ===========================================================================
 
 VBla_16:
-        if OptimiseZ80Stops=1 
+        if OptimiseZ80Stops=0 
 		stopZ80
 		waitZ80
 		endif
@@ -845,7 +845,7 @@ VBla_16:
 		writeCRAM	v_pal_dry,$80,0
 		writeVRAM	v_spritetablebuffer,$280,vram_sprites
 		writeVRAM	v_hscrolltablebuffer,$380,vram_hscroll
-		if OptimiseZ80Stops=1 
+		if OptimiseZ80Stops=0 
 		startZ80
 		endif
 		tst.b	(f_sonframechg).w
@@ -865,7 +865,7 @@ VBla_16:
 
 
 sub_106E:
-        if OptimiseZ80Stops=1 
+        if OptimiseZ80Stops=0 
 		stopZ80
 		waitZ80
 		endif
@@ -881,7 +881,7 @@ sub_106E:
 .waterbelow:
 		writeVRAM	v_spritetablebuffer,$280,vram_sprites
 		writeVRAM	v_hscrolltablebuffer,$380,vram_hscroll
-		if OptimiseZ80Stops=1 
+		if OptimiseZ80Stops=0 
 		startZ80
 		endif
 		rts	
@@ -974,42 +974,31 @@ JoypadInit:
 
 
 ReadJoypads:
-        if OptimiseZ80Stops=0
-		lea	(v_jpadhold1).w,a0 ; address where joypad states are written
-		lea	(z80_port_1_data+1).l,a1	; first	joypad port
-		bsr.s	.read		; do the first joypad
-		addq.w	#2,a1		; do the second	joypad
-
-.read:
-		move.b	#0,(a1)
-		nop	
-		nop	
-		move.b	(a1),d0
-		lsl.b	#2,d0
-		andi.b	#$C0,d0
-		move.b	#$40,(a1)
-		nop	
-		nop	
-		move.b	(a1),d1
-		andi.b	#$3F,d1
-		or.b	d1,d0
-		not.b	d0
-		move.b	(a0),d1
-		eor.b	d0,d1
-		move.b	d0,(a0)+
-		and.b	d0,d1
-		move.b	d1,(a0)+
-		rts	
-
-        elseif 
         stopZ80
         lea    (v_jpadhold1).w,a0 ; address where joypad states are written
         lea    (z80_port_1_data+1).l,a1    ; first    joypad port
-        bsr.s    .read        ; do the first joypad
-        stopZ80
-        addq.w    #2,a1        ; do the second    joypad
+       move.b    #0,(a1)
+        nop    
+        nop    
+        move.b    (a1),d0
+        lsl.b    #2,d0
+        andi.b    #$C0,d0
+        move.b    #$40,(a1)
+        nop    
+        nop    
+        move.b    (a1),d1
+        andi.b    #$3F,d1
+        or.b    d1,d0
+        not.b    d0
+        move.b    (a0),d1
+        eor.b    d0,d1
+        move.b    d0,(a0)+
+        and.b    d0,d1
+        move.b    d1,(a0)+
+        addq.w    #2,a1
 
-.read:
+        ; do the second    joypad
+
         move.b    #0,(a1)
         nop    
         nop    
@@ -1030,7 +1019,6 @@ ReadJoypads:
         move.b    d1,(a0)+
         startZ80
         rts   
-	    endif 
 
 ; End of function ReadJoypads
 

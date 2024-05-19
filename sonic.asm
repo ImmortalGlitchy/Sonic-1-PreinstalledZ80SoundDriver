@@ -30,7 +30,7 @@ S3Samples = 1 ; if 1, uses Snare and Kick From Sonic 3
 
 SkipCheckSum = 1 ; skips the slow checksum
 
-Sega68kFreezeTime: = $5D ; Changing to a higher value the 68k stays frozen longer
+Sega68kFreezeTime: = $68 ; Changing to a higher value the 68k stays frozen longer
 
 	include "MacroSetup.asm"
 	include "Macros.asm"
@@ -2119,28 +2119,41 @@ Sega_WaitPal:
 
 		move.b	#sfx_Sega,d0
 		jsr 	PlaySound_Special	; play "SEGA" sound
-		move.w  #$3000,d4
+		move.w  #$3000,d2
 
 .Pause
-		moveq  #Sega68kFreezeTime,d3
-.Loop
-        dbf d3,.Loop
-		subq.w  #1,d4
-		bne.s   .Pause
-		
-		move.b	#$14,(v_vbla_routine).w
-		bsr.w	WaitForVBla
-		move.w	#$1E,(v_demolength).w
+        lea ($FFFFF604).w,a0        ; address where JoyPad states are written
+        lea ($A10003).l,a1          ; address where JoyPad states are read from
+    move.b    #0,(a1)
+	nop
+	nop
+    move.b    (a1),d0
+	add.b	d0,d0
+	add.b	d0,d0
+    andi.b    #$C0,d0
+    move.b    #$40,(a1)
+	nop
+	nop
+    move.b    (a1),d1
+    andi.b    #$3F,d1
+    or.b    d1,d0
+    not.b    d0
+    move.b    (a0),d1
+    eor.b    d0,d1
+    move.b    d0,(a0)+
+    and.b    d0,d1
+    move.b    d1,(a0)+
 
-Sega_WaitEnd:
-		move.b	#2,(v_vbla_routine).w
-		bsr.w	WaitForVBla
-		tst.w	(v_demolength).w
-		beq.s	Sega_GotoTitle
-		andi.b	#btnStart,(v_jpadpress1).w ; is Start button pressed?
-		beq.s	Sega_WaitEnd	; if not, branch
+		btst    #7,($FFFFF604).w 
+        	bne.s   Sega_GotoTitle
+		moveq  #Sega68kFreezeTime,d0
+.Loop
+        dbf d0,.Loop
+		subq.w  #1,d2
+		bne.w   .Pause
 
 Sega_GotoTitle:
+		jsr	SoundDriverLoad; Reset Z80 driver
 		move.b	#id_Title,(v_gamemode).w ; go to title screen
 		rts	
 ; ===========================================================================

@@ -2155,7 +2155,6 @@ GM_Title:
 		bsr.w	ClearPLC
 		bsr.w	PaletteFadeOut
 		disable_ints
-		jsr 	SoundDriverLoad
 		lea	(vdp_control_port).l,a6
 		move.w	#$8004,(a6)	; 8-colour mode
 		move.w	#$8200+(vram_fg>>10),(a6) ; set foreground nametable address
@@ -2400,12 +2399,11 @@ LevelSelect:
 		cmpi.w	#$14,d0		; have you selected item $14 (sound test)?
 		bne.s	LevSel_Level_SS	; if not, go to	Level/SS subroutine
 		move.w	(v_levselsound).w,d0
-		addi.w	#$80,d0
 		tst.b	(f_creditscheat).w ; is Japanese Credits cheat on?
 		beq.s	LevSel_NoCheat	; if not, branch
-		cmpi.w	#$9F,d0		; is sound $9F being played?
+		cmpi.w	#$1F,d0		; is sound $9F being played?
 		beq.s	LevSel_Ending	; if yes, branch
-		cmpi.w	#$9E,d0		; is sound $9E being played?
+		cmpi.w	#$1E,d0		; is sound $9E being played?
 		beq.s	LevSel_Credits	; if yes, branch
 
 LevSel_NoCheat:
@@ -2417,8 +2415,14 @@ LevSel_NoCheat:
 		blo.s	LevelSelect	; if yes, branch
 
 LevSel_PlaySnd:
-		jsr 	PlaySound_Special	
+		cmpi.w	#$14,d0
+		bge.w	.PlaySound
+		jsr 	PlaySound
 		bra.s	LevelSelect
+.PlaySound:
+		jsr 	PlaySound_Special
+		bra.s	LevelSelect
+
 ; ===========================================================================
 
 LevSel_Ending:

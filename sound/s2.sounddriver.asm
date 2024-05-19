@@ -3705,16 +3705,16 @@ zSpedUpTempoTable:
         db	s1TempotoS2Z80(0FFh)
         db	s1TempotoS2Z80(5h)
 	db 	s1TempotoS2Z80(8h)	; Special Stage
-	db 	s1TempotoS2Z80(8h)	; Title Screen
-	db 	s1TempotoS2Z80(8h)	; Ending
-	db 	s1TempotoS2Z80(8h)	; Boss
+	db 	s1TempotoS2Z80(5h)	; Title Screen
+	db 	s1TempotoS2Z80(7h)	; Ending
+	db 	s1TempotoS2Z80(5h)	; Boss
 	db 	s1TempotoS2Z80(8h)	; FZ
-	db 	s1TempotoS2Z80(8h)	; Sonic Got Through
-	db 	s1TempotoS2Z80(8h)	; Game Over
+	db 	s1TempotoS2Z80(4h)	; Sonic Got Through
+	db 	s1TempotoS2Z80(0Bh)	; Game Over
 	db 	s1TempotoS2Z80(8h)	; Continue Screen
-	db 	s1TempotoS2Z80(8h)	; Credits
-	db 	s1TempotoS2Z80(8h)	; Drowning
-	db 	s1TempotoS2Z80(8h)	; Get Emerald
+	db 	s1TempotoS2Z80(0Dh)	; Credits
+	db 	s1TempotoS2Z80(2h)	; Drowning
+	db 	s1TempotoS2Z80(6h)	; Get Emerald
 	; DAC sample pointers and lengths
 	ensure1byteoffset 1Ch
 
